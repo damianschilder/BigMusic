@@ -38,4 +38,4 @@ api.add_resource( Search, '/search/<query>' )
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug= True, threaded= True)
