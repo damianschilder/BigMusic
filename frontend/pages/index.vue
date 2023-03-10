@@ -1,25 +1,26 @@
 <template lang="pug">
 .wrapper
-  Search
+  Searchbar
 </template>
 
 <script>
-import Search from '~/components/search/Search'
+import { useSearchStore } from '@/stores/search'
+const store = useSearchStore()
+
 
 export default {
-  components: { Search },
-  name: 'index',
-  layout: 'default',
   data: () => ({
+    store: store
   }),
 }
 </script>
 
 <style lang="scss" scoped>
 .wrapper {
+  padding-top: 80px;
   display: flex;
-  // background: green;
-  flex-direction: column;
   justify-content: center;
+  flex-direction: column;
+  // height: calc(100vh - 75px)
 }
 </style>
