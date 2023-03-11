@@ -1,14 +1,32 @@
 <template lang="pug">
-.layoutwrapper
-  Menu
-  nuxt
-  Footer
+.layout-wrapper
+  Navbar
+  router-view
 </template>
 
+<script>
+import { useSearchStore } from '@/stores/search'
+const store = useSearchStore()
+
+export default {
+  data: () => ({
+    store: store,
+    // timer: null
+  }),
+
+  mounted() {
+    this.store.getAccessToken()
+    // this.timer = setInterval(() => {
+    //   this.store.getAccessToken()
+    // }, 3600000)
+  },
+  // beforeDestroy() {
+  //   clearInterval(this.timer)
+  // }
+}
+</script>
 <style lang="scss" scoped>
-.layoutwrapper {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 70px auto 1fr;
+.layout-wrapper {
+  height: 100%;
 }
 </style>
