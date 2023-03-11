@@ -1,0 +1,15 @@
+artist
+    name
+    genre
+    albums
+        name
+        year
+        songs
+            title
+            length
+
+
+album
+    name
+    songs
+        data.....

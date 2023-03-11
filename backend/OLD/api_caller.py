@@ -2,10 +2,14 @@ from spotify import spotify_caller
 from musicbrainz import musicbrainz_caller
 
 
-query = "Nirvana"
+query = "Portishead"
 
 # get JSON
-spotify_results = spotify_caller(query)
+
+spotify_return = spotify_caller(query)
+
+spotify_results = spotify_return[0]
+spotify_album_data = spotify_return[1]
 musicbrainz_results = musicbrainz_caller(query)
 
 #print(f"Spotify results: {spotify_results}")
@@ -16,7 +20,7 @@ spotify_albums = spotify_results["artist"]["albums"]
 musicbrainz_albums = musicbrainz_results["artist"]["albums"]
 combined_albums = spotify_albums + musicbrainz_albums
 
-
+#print(combined_albums)
 
 # remove duplicate albums
 seen = set()
@@ -31,11 +35,21 @@ for d in combined_albums:
 sorted_albums = sorted(duplicates_removed, key=lambda x: x['Year'])
 
 
-# creates new dictionary with spotify results as basis
-final_response = spotify_results
-final_response.update({"artist":({"albums":sorted_albums})})
 
-print(f"FINAL RESPONSE {final_response}")
+# update albums
+spotify_results["artist"]["albums"] = sorted_albums
+#print(spotify_results)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -45,14 +59,25 @@ spotify_list = []
 for item in spotify_albums:
     spotify_list.append(str(item))
 
+print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+print(spotify_list)
+
 musicbrainz_list = []
 for item in musicbrainz_albums:
     musicbrainz_list.append(str(item)) 
-#print(f"Musicbrainz list {musicbrainz_list}")
 
-
-
+unique_spotify = list(set(spotify_list) - set(musicbrainz_list))
 print(f"\nUnique values in Spotify: {list(set(spotify_list) - set(musicbrainz_list))}")
 print(f"\nUnique values in Musicbrainz: {list(set(musicbrainz_list) - set(spotify_list))}")
-##################################
 
+
+##################################
+spotify_albums_results = []
+for item in spotify_album_data["items"]:
+    name = item["name"]
+    year = item["release_date"][0:4]
+    for album in list(spotify_list):
+        print(album)
+
+
+print(spotify_albums_results)

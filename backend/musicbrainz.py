@@ -1,36 +1,28 @@
 import requests
 import json
+from spotify_uri_converter import uri_converter
 
 
-def musicbrainz_caller(query):
-    artist_limit = 3
-    album_limit = 5
-    artist_search = requests.get(f'https://musicbrainz.org/ws/2/artist?query={query}&limit={artist_limit}&fmt=json')
-    # retrieve text from JSON
-    artist_json = json.loads(artist_search.text)
+def musicbrainz_api(spotify_artist_name):
+    artist_id = uri_converter(spotify_artist_name, music_platform="musicbrainz")
 
-    # select first artist
-    artist_data = artist_json["artists"][0]
-    artist_name = artist_data["name"]
-    artist_id = artist_data["id"]
+    album_search_raw = requests.get(f'https://musicbrainz.org/ws/2/artist/{artist_id}?inc=release-groups&fmt=json')
+    artist_albums_json = json.loads(album_search_raw.text)
 
-
-    album_search = requests.get(f'https://musicbrainz.org/ws/2/artist/{artist_id}?inc=release-groups&fmt=json')
-    album_json = json.loads(album_search.text)
-    album_data = album_json["release-groups"]
-
-    albums_list = []
-    for item in album_data[0:album_limit]:
-        album_dict = {}
-        if item["primary-type"] == "Album":
-            album_dict.update({"Name":item["title"]})
-            album_dict.update({"Year":item["first-release-date"][0:4]})
-            albums_list.append(album_dict)
+    # album dictionary creator
+    album_list = []
+    for item in artist_albums_json["release-groups"]:
+        temp_dict = {}
+        # only include albums that have a release date
+        if item["primary-type"] == "Album" and item["first-release-date"]:
+            temp_dict.update({"name":item["title"]})
+            temp_dict.update({"release_date":item["first-release-date"]})
+            # not supported by Musicbrainz
+            temp_dict.update({"amount_songs":None})
+            temp_dict.update({"musicbrainz_uri":item["primary-type-id"]})
+            # not supported by Musicbrainz
+            temp_dict.update({"image":None})
+            album_list.append(temp_dict)
 
 
-    artist_dict = {}
-
-    artist_dict.update({"artist":({"name":artist_name, "albums":albums_list})})
-
-    return artist_dict
-
+    return album_list
