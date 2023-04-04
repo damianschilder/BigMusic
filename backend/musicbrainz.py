@@ -1,10 +1,13 @@
 import requests
 import json
-from spotify_uri_converter import uri_converter
+from spotify2mb import get_artist_mbid
 
 
-def musicbrainz_api(spotify_artist_name):
-    artist_id = uri_converter(spotify_artist_name, music_platform="musicbrainz")
+# creates artist dictionary from Musicbrainz
+
+def musicbrainz_api(spotify_artist_id):
+    
+    artist_id = get_artist_mbid(spotify_artist_id)
 
     album_search_raw = requests.get(f'https://musicbrainz.org/ws/2/artist/{artist_id}?inc=release-groups&fmt=json')
     artist_albums_json = json.loads(album_search_raw.text)
@@ -19,7 +22,7 @@ def musicbrainz_api(spotify_artist_name):
             temp_dict.update({"release_date":item["first-release-date"]})
             # not supported by Musicbrainz
             temp_dict.update({"amount_songs":None})
-            temp_dict.update({"musicbrainz_uri":item["primary-type-id"]})
+            temp_dict.update({"musicbrainz_uri":item["id"]})
             # not supported by Musicbrainz
             temp_dict.update({"image":None})
             album_list.append(temp_dict)

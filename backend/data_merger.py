@@ -5,10 +5,9 @@ from spotify import spotify_api
 
 def get_artist_results(spotify_artist_id):
     spotify_artist_dict = spotify_api(spotify_artist_id)
-    spotify_artist_name = spotify_artist_dict["name"]
     spotify_albums_list = spotify_artist_dict["albums"]
 
-    musicbrainz_albums_list = musicbrainz_api(spotify_artist_name)
+    musicbrainz_albums_list = musicbrainz_api(spotify_artist_id)
 
 
     # deduplicate spotify results
@@ -21,7 +20,6 @@ def get_artist_results(spotify_artist_id):
             seen.add(album_identifiers)
             spotify_album_list_noduplicates.append(item)
 
-    #print(spotify_album_list_noduplicates)
 
     spotify_albums_identifier_list = []
     for item in spotify_album_list_noduplicates:

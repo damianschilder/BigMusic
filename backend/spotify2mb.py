@@ -3,11 +3,11 @@ import musicbrainzngs
 
 musicbrainzngs.set_useragent("BigMusic", 1.0)
 
+# updates spotify artist uri to musicbrainz MBID
+# example 6olE6TJLqED3rqDCT0FyPh becomes 5b11f4ce-a62d-471e-81fc-a69a8278c7da
 
 
-
-# TODO change default of album
-def make_spotify_url(spotify_id, spotify_type="album"):
+def make_spotify_url(spotify_id, spotify_type="artist"):
     spotify_type = 'artist'
     return "https://open.spotify.com/{0}/{1}".format(spotify_type, spotify_id)
 
@@ -32,7 +32,3 @@ def get_artist_mbid(spotify_id):
         return "No associated artists."
 
 
-
-
-# Nirvana id to MBID
-print(get_artist_mbid('6olE6TJLqED3rqDCT0FyPh'))
