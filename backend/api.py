@@ -21,6 +21,10 @@ class Discogs( Resource ):
   def get( self ):
     return {'Endpoint': 'Discogs'}
 
+class LastFM( Resource ):
+  def get( self ):
+    return {'Endpoint': 'LastFM'}
+
 # Open powershell and try this command:'curl http://127.0.0.1:5000/search/kanye' and you should see 'Kanye West' as a result.
 class Search( Resource ):
   def get( self, query ):
@@ -35,6 +39,7 @@ api.add_resource( MusicBrainz, '/musicbrainz' )
 api.add_resource( Spotify, '/spotify' )
 api.add_resource( Discogs, '/discogs' )
 api.add_resource( Search, '/search/<query>' )
+api.add_resource( LastFM, '/lastfm' )
 
 
 

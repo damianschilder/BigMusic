@@ -33,9 +33,11 @@ def get_artist_results(spotify_artist_id):
     for item in musicbrainz_albums_list:
         current_dict = {}
         current_dict.update({"name":item["name"]})
-        current_dict.update({"release_date":item["release_date"][:4]})
+        current_dict.update({"release_date":item["release_date"][:4]}) 
         if not current_dict in spotify_albums_identifier_list:
             musicbrainz_unique_albums_list.append(item)
+        else:
+            current_dict.update({"musicbrainz_uri": item["musicbrainz_uri"]})
         spotify_albums_identifier_list.append(current_dict)
 
 
