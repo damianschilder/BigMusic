@@ -4,6 +4,8 @@ import requests
 import json
 from flask_cors import CORS
 
+from data_merger import get_artist_results
+
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -28,12 +30,8 @@ class LastFM( Resource ):
 # Open powershell and try this command:'curl http://127.0.0.1:5000/search/kanye' and you should see 'Kanye West' as a result.
 class Search( Resource ):
   def get( self, query ):
-    url = f'https://musicbrainz.org/ws/2/artist?query={ query }&limit=7&fmt=json'
-    r = requests.get( url )
-
-    data = json.loads(r.content.decode('utf-8'))
-    print(data)
-    return data['artists']
+    artist_call = get_artist_results('6olE6TJLqED3rqDCT0FyPh')
+    return artist_call
 
 api.add_resource( MusicBrainz, '/musicbrainz' )
 api.add_resource( Spotify, '/spotify' )
