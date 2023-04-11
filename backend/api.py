@@ -27,10 +27,10 @@ class LastFM( Resource ):
   def get( self ):
     return {'Endpoint': 'LastFM'}
 
-# Open powershell and try this command:'curl http://127.0.0.1:5000/search/kanye' and you should see 'Kanye West' as a result.
+# Rename this
 class Search( Resource ):
   def get( self, query ):
-    artist_call = get_artist_results('6olE6TJLqED3rqDCT0FyPh')
+    artist_call = get_artist_results( query )
     return artist_call
 
 api.add_resource( MusicBrainz, '/musicbrainz' )
