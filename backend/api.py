@@ -5,40 +5,25 @@ import json
 from flask_cors import CORS
 
 from data_merger import get_artist_results
+from album_content import get_album_content
+
 
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-class MusicBrainz( Resource ):
-  def get( self ):
-    return 'hoi' 
+class Album( Resource ):
+  def get( self, album ):
+    response = get_album_content( album )
+    return response
 
-
-class Spotify( Resource ):
-  def get( self ):
-    return {'Endpoint': 'Spotify'}
-
-class Discogs( Resource ):
-  def get( self ):
-    return {'Endpoint': 'Discogs'}
-
-class LastFM( Resource ):
-  def get( self ):
-    return {'Endpoint': 'LastFM'}
-
-# Rename this
-class Search( Resource ):
-  def get( self, query ):
-    artist_call = get_artist_results( query )
-    return artist_call
-
-api.add_resource( MusicBrainz, '/musicbrainz' )
-api.add_resource( Spotify, '/spotify' )
-api.add_resource( Discogs, '/discogs' )
-api.add_resource( Search, '/search/<query>' )
-api.add_resource( LastFM, '/lastfm' )
-
+class Artist( Resource ):
+  def get( self, artist ):
+    response = get_artist_results( artist )
+    return response
+  
+api.add_resource( Album, '/album/<album>' )
+api.add_resource( Artist, '/artist/<artist>' )
 
 
 if __name__ == '__main__':
