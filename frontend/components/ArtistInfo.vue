@@ -1,11 +1,12 @@
 <template lang="pug">
 .artistinfo-wrapper 
-  img( :src="artist.imageLarge")
+  img( v-if="artist.imageLarge" :src="artist.imageLarge" )
+  img( v-else src="~/assets/svg/person.svg")
   .info
     .genres-container
       .genres
-        span( v-for="genre in genres" ) {{ genre }}
-      //- img( src="~/assets/svg/readmore.svg")
+        span( v-for="genre in artist.genres" ) {{ genre }}
+      img( src="~/assets/svg/readmore.svg")
 
     .icons
       .icons-pair
@@ -27,17 +28,17 @@ export default {
   data: () => ({
     artist: artist.currentArtist,
   }),
-  computed: {
-    genres() {
-      let length = this.artist.genres.join("").length
-      if (length <= 50) {
-        return this.artist.genres
-      }
-      let genres = this.artist.genres.slice(0, 3)
-      genres[2] = this.artist.genres.slice(0, 3)[2] + "..."
-      return genres
-    }
-  }
+  // computed: {
+  //   genres() {
+  //     let length = this.artist.genres.join("").length
+  //     if (length <= 50) {
+  //       return this.artist.genres
+  //     }
+  //     let genres = this.artist.genres.slice(0, 3)
+  //     genres[2] = this.artist.genres.slice(0, 3)[2] + "..."
+  //     return genres
+  //   }
+  // }
 }
 </script>
 

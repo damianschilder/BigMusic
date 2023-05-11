@@ -27,6 +27,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .layout-wrapper {
-  height: 100%;
+  min-height: 100vh;
 }
 </style>

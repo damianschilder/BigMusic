@@ -1,15 +1,21 @@
 <template lang="pug">
 .artist-wrapper
-  .content-wrapper
-    ArtistInfo
+  Loader( v-if="artist.loading" )
+  .content-wrapper( v-else )
+    //- ArtistInfo
     Timeline
+    //- AlbumSlider
 </template>
 
 <script>
+import { useArtistStore } from '@/stores/artist'
+const artist = useArtistStore()
+
 export default {
-  data:() => {
-    
-  }
+  data: () => ({
+    artist: artist,
+    loading: false
+  }),
 }
 </script>
 
@@ -18,6 +24,7 @@ export default {
 .artist-wrapper {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   .content-wrapper {
     display: grid;
     grid-template-columns: 100%;

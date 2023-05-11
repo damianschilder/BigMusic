@@ -12,7 +12,8 @@
       NuxtLink.result( 
         v-for="artist in store.results" 
         :to="artist.name"
-        @click="setArtist( artist )")
+        @click="setArtist( artist.id )"
+        )
         img( 
           v-if="artist.imageLarge"
           :src="artist.imageLarge")
@@ -24,13 +25,13 @@ import { useSearchStore } from '@/stores/search'
 const store = useSearchStore()
 
 import { useArtistStore } from '@/stores/artist'
-const currentArtist = useArtistStore()
+const artist = useArtistStore()
 
 
 export default {
   data: () => ({
     store: store,
-    currentArtist: currentArtist,
+    artist: artist,
     query: "",
   }),
   methods: {
@@ -41,8 +42,8 @@ export default {
         this.store.getResults( query )
       }
     },
-    setArtist( artist ) {
-      this.currentArtist.setCurrentArtist( artist ) 
+    setArtist( spotifyId ) {
+      this.artist.getArtist( spotifyId ) 
     }
   }
 }

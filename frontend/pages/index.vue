@@ -1,6 +1,7 @@
 <template lang="pug">
 .wrapper
-  Searchbar
+  //- Searchbar
+  Timeline
 </template>
 
 <script>

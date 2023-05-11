@@ -1,22 +1,60 @@
 <template lang="pug">
-.wrapper
-  //- <div>
-  //-   <highcharts class="hc" :options="chartOptions" ref="chart"></highcharts>
-  //- </div>
+.chartwrapper
+  #chart
+    apexchart(
+      type="rangeBar" 
+      height="350" 
+      :options="chartOptions" 
+      :series="series")
 </template>
 
-<!-- <script>
-export default {
-  data() {
-    return {
-      chartOptions: {
-        series: [
-          {
-            data: [1, 2, 3]
-          }
+<script setup>
+let series = [
+  {
+    data: [
+      {
+        x: 'Code',
+        y: [
+          new Date('2019-03-02').getTime(),
+          new Date('2019-03-04').getTime()
+        ]
+      },
+      {
+        x: 'Test',
+        y: [
+          new Date('2019-03-04').getTime(),
+          new Date('2019-03-08').getTime()
+        ]
+      },
+      {
+        x: 'Validation',
+        y: [
+          new Date('2019-03-08').getTime(),
+          new Date('2019-03-12').getTime()
+        ]
+      },
+      {
+        x: 'Deployment',
+        y: [
+          new Date('2019-03-12').getTime(),
+          new Date('2019-03-18').getTime()
         ]
       }
-    };
+    ]
+  }
+];
+let chartOptions = {
+  chart: {
+    height: 350,
+    type: 'rangeBar'
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+    }
+  },
+  xaxis: {
+    type: 'datetime',
   }
 };
-</script> -->
+</script>

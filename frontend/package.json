@@ -11,16 +11,18 @@
     "nuxt": "^3.2.3"
   },
   "dependencies": {
+    "12": "^1.0.2",
     "@pinia/nuxt": "^0.4.7",
+    "apexcharts": "^3.40.0",
     "buffer": "^6.0.3",
-    "chart.js": "^4.2.1",
-    "highcharts": "^10.3.3",
-    "highcharts-vue": "^1.4.0",
     "pinia": "^2.0.32",
     "qs": "^6.11.0",
     "sass": "^1.58.3",
     "sass-loader": "^13.2.0",
+    "swiper": "^9.2.0",
     "vite-plugin-pug": "^0.3.2",
-    "vue-chartjs": "^5.2.0"
+    "vue-apexcharts": "^1.6.2",
+    "vue-chartjs": "^5.2.0",
+    "vue3-apexcharts": "^1.4.1"
   }
 }
