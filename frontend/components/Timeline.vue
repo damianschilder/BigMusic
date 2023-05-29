@@ -1,60 +1,147 @@
 <template lang="pug">
 .chartwrapper
-  #chart
+  h1 {{ albums }}
+  ClientOnly
     apexchart(
-      type="rangeBar" 
+      type="scatter" 
       height="350" 
       :options="chartOptions" 
+      @dataPointSelection="dataPointSelectionHandler"
+
       :series="series")
 </template>
 
-<script setup>
-let series = [
-  {
-    data: [
-      {
-        x: 'Code',
-        y: [
-          new Date('2019-03-02').getTime(),
-          new Date('2019-03-04').getTime()
-        ]
+<script>
+import { useArtistStore } from '~~/stores/artist';
+const artistStore = useArtistStore()
+
+export default ({
+  data() {
+    return {
+      series: [{
+        name: 'TEAM 1',
+        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+          min: 10,
+          max: 60
+        })
       },
       {
-        x: 'Test',
-        y: [
-          new Date('2019-03-04').getTime(),
-          new Date('2019-03-08').getTime()
-        ]
+        name: 'TEAM 2',
+        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+          min: 10,
+          max: 60
+        })
       },
       {
-        x: 'Validation',
-        y: [
-          new Date('2019-03-08').getTime(),
-          new Date('2019-03-12').getTime()
-        ]
+        name: 'TEAM 3',
+        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
+          min: 10,
+          max: 60
+        })
       },
       {
-        x: 'Deployment',
-        y: [
-          new Date('2019-03-12').getTime(),
-          new Date('2019-03-18').getTime()
-        ]
+        name: 'TEAM 4',
+        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 10, {
+          min: 10,
+          max: 60
+        })
+      },
+      {
+        name: 'TEAM 5',
+        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
+          min: 10,
+          max: 60
+        })
+      },
+    ],
+    chartOptions: {
+      chart: {
+        height: 350,
+        type: 'scatter',
+        zoom: {
+          type: 'xy'
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      grid: {
+        show: false,
+      },
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          style: {
+            color: '#FFFFFF',
+            cssClass: 'xaxislabel',
+          }
+        }
+      },
+      yaxis: {
+        max: 70
+      },
+      legend: {
+        show: false
       }
-    ]
+    },
   }
-];
-let chartOptions = {
-  chart: {
-    height: 350,
-    type: 'rangeBar'
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true,
+},
+  computed: {
+    albums () {
+      // let series = [{
+      //   name: 'TEAM 1',
+      //   data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+      //     min: 10,
+      //     max: 60
+      //   })
+      // }]
+      let series = []
+      let albums = artistStore.currentArtist.albums
+      for (const index in albums) {
+        let album = albums[index]
+        let test = {
+          name: album.name
+        }
+        series.push(test)
+        // console.log(this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+        //   min: 10,
+        //   max: 60
+        // }))
+        
+      }
+      return series
     }
   },
-  xaxis: {
-    type: 'datetime',
-  }
-};
+  methods: {
+    generateDayWiseTimeSeries: function(baseval, count, yrange) {
+      var i = 0;
+      var series = [];
+      while (i < count) {
+        var x = baseval;
+        var y =
+          Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
+          yrange.min;
+
+        series.push([x, y]);
+        baseval += 86400000;
+        i++;
+      }
+      return series;
+    },
+    dataPointSelectionHandler (event, chartContext, config) {
+      console.log(chartContext);  
+      console.log(config);  
+    }
+  },
+})
 </script>
+
+<style lang="scss" scoped>
+::v-deep(*) {
+  .apexcharts-xaxis, .apexcharts-yaxis {
+    * {
+      fill: #EE9B80;
+    }
+  }
+}
+</style>
