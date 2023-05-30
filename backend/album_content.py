@@ -36,6 +36,7 @@ def get_album_content(id):
             songs_list.append(temp_dict)
 
         release_dict.update({"songs":songs_list})
+        print(release_dict)
 
 
     elif 'spotify:album' in id:
@@ -71,4 +72,3 @@ def get_album_content(id):
 
 
     return release_dict
-

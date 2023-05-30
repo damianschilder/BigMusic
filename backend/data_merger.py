@@ -1,8 +1,11 @@
 from musicbrainz import musicbrainz_api
 from spotify import spotify_api
+# from lastfm import lastfm_api
+# TODO implement lastfm with albums instead of release groups
 import datetime
 import re
 import pytz
+
 
 
 # convert yyyy-mm-dd or yyyy to utx unix timestamp
