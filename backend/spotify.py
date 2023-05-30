@@ -31,6 +31,7 @@ def spotify_api(spotify_artist_id):
     artist_dict.update({"name":artist_json["name"]})
     artist_dict.update({"genres":artist_json["genres"]})
     artist_dict.update({"popularity":artist_json["popularity"]})
+    artist_dict.update({"image":artist_json["images"][0]})
     artist_dict.update({"albums":album_list})
 
     #print(artist_dict)
