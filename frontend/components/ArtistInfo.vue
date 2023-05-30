@@ -1,16 +1,16 @@
 <template lang="pug">
 .artistinfo-wrapper 
   img( v-if="artist.imageLarge" :src="artist.imageLarge" )
-  img( v-else src="~/assets/svg/person.svg")
+  img( v-else src="~/assets/icons/person.svg")
   .info
     .genres-container
       .genres
         span( v-for="genre in artist.genres" ) {{ genre }}
-      img( src="~/assets/svg/readmore.svg")
+      img( src="~/assets/icons/readmore.svg")
 
     .icons
       .icons-pair
-        img( src="~/assets/svg/popularity.svg")
+        img( src="~/assets/icons/popularity.svg")
         span {{ artist.popularity }}
     .name
       span {{artist.name}}

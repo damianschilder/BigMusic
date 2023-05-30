@@ -1,18 +1,21 @@
 <template lang="pug">
 .slidewrapper
   .breadcrumbs 
-    span PORTISHEAD > DUMMY > MYSTERONS
+    nuxt-icon(name="back" @click="deleteCurrentAlbum") 
+    span {{ artistStore.currentArtist.name }} ● {{ artistStore.currentAlbum.name }}
   .content
-    .header
-      AlbumDetails
-    //-   img( v-if="album && album.image && album.image.url" :src="album.image.url")
-    //-   .name 
-    //-     span {{ album.name }}
+    .image
+    
+      
 </template>
 
 <script>
+import { useArtistStore } from '~~/stores/artist';
+const artistStore = useArtistStore()
+
 export default {
   data: () => ({
+    artistStore: artistStore
   }),
   props: {
     album: {
@@ -25,6 +28,11 @@ export default {
       //   return this.album.image.url
       // }
       // return false
+    }
+  },
+  methods: {
+    deleteCurrentAlbum() {
+      artistStore.currentAlbum = null
     }
   }
 }
@@ -39,9 +47,20 @@ export default {
   padding: 0.75rem 2rem;
   row-gap: 0.75rem;
   > .breadcrumbs {
+    display: flex;
+    align-items: center;
+    > .nuxt-icon svg {
+      height: 20px;
+      width: 20px;
+      cursor: pointer;
+      &:hover {
+        color: #EE9B80;
+      }
+    }
     > span {
       font: normal 10px/10px "Lato";
       letter-spacing: 0.2rem;
+      text-transform: uppercase;
     }
   }
   > .content {
