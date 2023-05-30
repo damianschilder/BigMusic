@@ -15,3 +15,6 @@ def lastfm_api(musicbrainz_album_id):
     #LFbio = data["album"]["wiki"]["summary"] Te korte text.
     print(LFbio_text)
     return LFbio_text
+
+
+lastfm_api('a885cfae-1025-344c-8326-dea2094b2683')

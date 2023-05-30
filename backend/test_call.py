@@ -7,8 +7,8 @@ from album_content import get_album_content
 #print("\n\n\n\n\n")
 
 
-artist_call = get_artist_results('4tZwfgrHOc3mvqYlEYSvVi')
-print(artist_call)
+#artist_call = get_artist_results('4tZwfgrHOc3mvqYlEYSvVi')
+#print(artist_call)
 #print("\n")
 
 
@@ -19,7 +19,7 @@ print(artist_call)
 
 
 # example spotify album call
-#album_content = get_album_content('spotify:album:6yaiubHHJy8N8QcHy3julo')
+album_content = get_album_content('spotify:album:6yaiubHHJy8N8QcHy3julo')
 #album_content = get_album_content(artist_call['albums'][1]['spotify_uri'])
 
 #print(album_content)

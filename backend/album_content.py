@@ -51,6 +51,7 @@ def get_album_content(id):
         release_dict = {}
         release_dict.update({"name":album_content['name']})
         release_dict.update({"release_date":album_content['release_date'][0:4]})
+        release_dict.update({"image":album_content["images"][0]})
 
 
         songs_list = []
@@ -70,8 +71,4 @@ def get_album_content(id):
 
 
     return release_dict
-
-
-
-
 
