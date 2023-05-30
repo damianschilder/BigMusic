@@ -2,7 +2,7 @@
 .artist-wrapper
   Loader( v-if="artist.loading" )
   .content-wrapper( v-else )
-    //- ArtistInfo
+    ArtistInfo
     Timeline
     //- AlbumSlider
 </template>
