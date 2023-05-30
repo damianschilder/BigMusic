@@ -1,6 +1,6 @@
 <template lang="pug">
 .chartwrapper
-  h1 {{ albums }}
+  //- Button(@click="test()") test
   ClientOnly
     apexchart(
       type="scatter" 
@@ -18,52 +18,37 @@ const artistStore = useArtistStore()
 export default ({
   data() {
     return {
-      series: [{
-        name: 'TEAM 1',
-        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-          min: 10,
-          max: 60
-        })
-      },
-      {
-        name: 'TEAM 2',
-        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-          min: 10,
-          max: 60
-        })
-      },
-      {
-        name: 'TEAM 3',
-        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
-          min: 10,
-          max: 60
-        })
-      },
-      {
-        name: 'TEAM 4',
-        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 10, {
-          min: 10,
-          max: 60
-        })
-      },
-      {
-        name: 'TEAM 5',
-        data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
-          min: 10,
-          max: 60
-        })
-      },
-    ],
+    allAlbums: [],
+
+    series: this.formatSeries(),
     chartOptions: {
       chart: {
         height: 350,
         type: 'scatter',
         zoom: {
           type: 'xy'
+        },
+        animations: {
+        enabled: false,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+            enabled: false,
+            delay: 150
+        },
+        dynamicAnimation: {
+            enabled: false,
+            speed: 350
         }
+    }
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
+        textAnchor: 'start',
+        formatter: function(val, opt) {
+            return artistStore.currentArtist.albums[opt.seriesIndex].name
+        },
+        offsetX: 0,
       },
       grid: {
         show: false,
@@ -77,61 +62,79 @@ export default ({
           }
         }
       },
-      yaxis: {
-        max: 70
-      },
       legend: {
         show: false
+      },
+      markers: {
+        size: 30,
+        // shape: 'circle',
+        radius: 0
+      },
+      // fill: {
+      //   type: 'image',
+      //   opacity: 1,
+      //   image: {
+      //     src: this.gatherImages(),
+      //     width: 60,
+      //     height: 60
+      //   }
+      // },
+      tooltip: {
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+          return '<ul>' +
+          '<span>'+ artistStore.currentArtist.albums[seriesIndex].name +'</span>' +
+          '<br>'+'</br>' +
+          '<span>'+ artistStore.currentArtist.albums[seriesIndex].release_date +'</span>' +
+          // '<li><b>Number</b>: ' + data.y + '</li>' +
+          // '<li><b>Product</b>: \'' + data.product + '\'</li>' +
+          // '<li><b>Info</b>: \'' + data.info + '\'</li>' +
+          // '<li><b>Site</b>: \'' + data.site + '\'</li>' +
+          '</ul>';
+        }
       }
     },
   }
 },
   computed: {
-    albums () {
-      // let series = [{
-      //   name: 'TEAM 1',
-      //   data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-      //     min: 10,
-      //     max: 60
-      //   })
-      // }]
-      let series = []
-      let albums = artistStore.currentArtist.albums
-      for (const index in albums) {
-        let album = albums[index]
-        let test = {
-          name: album.name
-        }
-        series.push(test)
-        // console.log(this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-        //   min: 10,
-        //   max: 60
-        // }))
-        
-      }
-      return series
-    }
   },
   methods: {
-    generateDayWiseTimeSeries: function(baseval, count, yrange) {
-      var i = 0;
-      var series = [];
-      while (i < count) {
-        var x = baseval;
-        var y =
-          Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
-          yrange.min;
-
-        series.push([x, y]);
-        baseval += 86400000;
-        i++;
+    test() {
+      alert("haha")
+    },
+    formatSeries () {
+      let albums = artistStore.currentArtist.albums
+      let series = []
+      for (const index in albums) {
+        let album = albums[index]
+        let serie = {
+          name: album.name,
+          data: [ [album.release_date * 1000, album.relevance_score] ]
+        }
+        series.push(serie)
       }
-      return series;
+      return series
+    },
+    gatherImages () {
+      let albums = artistStore.currentArtist.albums
+      let images = []
+      for (const index in albums) {
+        let album = albums[index]
+        if (album.image) {
+          images.push(album.image.url)
+        } else {
+          images.push('https://i.ibb.co/xhMYYRD/Screen-Shot-2019-03-04-at-4-45-20-PM.png')
+        }
+      }
+      return images
     },
     dataPointSelectionHandler (event, chartContext, config) {
-      console.log(chartContext);  
-      console.log(config);  
-    }
+      // console.log(chartContext);  
+      let spotifyUri = artistStore.currentArtist.albums[config.seriesIndex].spotify_uri;
+      var result = /[^:]*$/.exec(spotifyUri)[0];
+      // console.log(result)
+      artistStore.getAlbums(spotifyUri)
+    },
   },
 })
 </script>
@@ -142,6 +145,12 @@ export default ({
     * {
       fill: #EE9B80;
     }
+  }
+  .apexcharts-tooltip {
+    display: flex!important;
+    flex-direction: column!important;
+    background: rgba(238, 155, 128, 1)!important;
+    color: white;
   }
 }
 </style>

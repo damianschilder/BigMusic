@@ -7,5 +7,6 @@ export default defineNuxtConfig({
     "@/assets/styles/breakpoints.scss" ],
   modules: [
     '@pinia/nuxt',
+    'nuxt-icons'
   ],
 })

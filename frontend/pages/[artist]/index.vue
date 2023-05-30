@@ -1,19 +1,19 @@
 <template lang="pug">
 .artist-wrapper
-  Loader( v-if="artist.loading" )
+  Loader( v-if="artistStore.loading" )
   .content-wrapper( v-else )
     ArtistInfo
-    Timeline
-    //- AlbumSlider
+    AlbumSlider( v-if="artistStore.currentAlbum")
+    Timeline( v-else )
 </template>
 
 <script>
 import { useArtistStore } from '@/stores/artist'
-const artist = useArtistStore()
+const artistStore = useArtistStore()
 
 export default {
   data: () => ({
-    artist: artist,
+    artistStore: artistStore,
     loading: false
   }),
 }
