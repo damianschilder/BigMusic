@@ -2,12 +2,25 @@
 .artist-wrapper
   Loader( v-if="checkLoading" )
   .content-wrapper( v-else )
+    NuxtLink(to="/") 
+      nuxt-icon( name="back")
+      span Back to search
     ArtistInfo
-    AlbumSlider( v-if="currentView === 'album'"
+    AlbumSlider( 
+    ref="AlbumSlider"
+    v-if="currentView === 'album'"
+    :initialSlide="initialSlideIndex"
     @changeComponent="handler"
+    )
+    SecondaryTimeline(
+    ref="SecondaryTimeline"
+      :initialSlide="initialSlideIndex"
+      @slideChange="slideChange"
+      v-if="currentView === 'album'"
     )
     Timeline(
       v-if="currentView === 'timeline'" 
+      @clickedIndex="setSlideIndex"
       @changeComponent="handler"
     )
     //- h1( v-if="currentView === 'album'") hahahaha
@@ -22,23 +35,35 @@ export default {
   data: () => ({
     artistStore: artistStore,
     loading: false,
-    currentView: "timeline"
+    currentView: "timeline",
+    initialSlideIndex: 0
   }),
   methods: {
     handler(event) {
       this.currentView = event
     },
-    getSurroundingAlbums() {
-      if (artistStore.currentAlbumIndex !== 0) {
-        console.log("Previous Album: ", artistStore.currentArtist.albums[artistStore.currentAlbumIndex - 1])  
-        const previousAlbumId = artistStore.currentArtist.albums[artistStore.currentAlbumIndex - 1].spotify_uri
-        const previousAlbumIndex = artistStore.currentAlbumIndex - 1
+    slideChange(slideIndex) {
+      console.log("haha")
+      var AlbumSlider = this.$refs.AlbumSlider;
+      // var SecondaryTimeline = this.$refs.SecondaryTimeline;
+      AlbumSlider.setAlbum(slideIndex);
+      this.getSurroundingAlbums(slideIndex)
+    },
+    setSlideIndex(slideIndex) {
+      this.initialSlideIndex = slideIndex
+    },
+    getSurroundingAlbums( currentSlideIndex ) {
+      console.log("test")
+      if ( currentSlideIndex !== 0 ) {
+        const previousAlbumIndex = currentSlideIndex - 1
+        console.log("Previous Album: ", artistStore.currentArtist.albums[previousAlbumIndex])  
+        const previousAlbumId = artistStore.currentArtist.albums[previousAlbumIndex].spotify_uri
         artistStore.getAlbums(previousAlbumId, previousAlbumIndex)
       }
-      if ((artistStore.currentAlbumIndex + 1) !== artistStore.currentArtist.albums.length) {
-        console.log("Next Album: ", artistStore.currentArtist.albums[artistStore.currentAlbumIndex + 1])  
-        const nextAlbumId = artistStore.currentArtist.albums[artistStore.currentAlbumIndex + 1].spotify_uri
-        const nextAlbumIndex = artistStore.currentAlbumIndex + 1
+      if ( currentSlideIndex !== artistStore.currentArtist.albums.length ) {
+        const nextAlbumIndex = currentSlideIndex + 1
+        console.log("Next Album: ", artistStore.currentArtist.albums[nextAlbumIndex])  
+        const nextAlbumId = artistStore.currentArtist.albums[nextAlbumIndex].spotify_uri
         artistStore.getAlbums(nextAlbumId, nextAlbumIndex)
       }
     }
@@ -51,29 +76,40 @@ export default {
       return true
     }
   },
-  watch: {
-  'artistStore.currentAlbumIndex': {
-    handler(val){
-      this.getSurroundingAlbums()
-    },
-    deep: true
-    }
-  }
+  // watch: {
+  // 'artistStore.currentAlbumIndex': {
+  //   handler(val){
+  //     this.getSurroundingAlbums()
+  //   },
+  //   deep: true
+  //   }
+  // }
 }
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .artist-wrapper {
   display: flex;
   flex-direction: column;
+  padding-top: 50px;
+
   .content-wrapper {
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: auto;
-    gap: 60px;
     align-self: center;
+    row-gap: 32px;
     width: 1040px;
+  }
+}
+a {
+  width: fit-content;
+  color: #E5E3D4;
+  text-decoration: none;
+  font: normal 16px "Lato";
+  &:hover {
+    text-decoration: underline;
   }
 }
 </style>

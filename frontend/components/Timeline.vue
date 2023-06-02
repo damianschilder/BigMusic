@@ -133,6 +133,7 @@ export default ({
       // var result = /[^:]*$/.exec(spotifyUri)[0];
       artistStore.getAlbums(spotifyUri, config.seriesIndex)
       artistStore.currentAlbumIndex = config.seriesIndex
+      this.$emit('clickedIndex', config.seriesIndex)
       this.$emit('changeComponent', 'album')
     },
   },

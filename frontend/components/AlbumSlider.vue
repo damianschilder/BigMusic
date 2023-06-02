@@ -1,24 +1,13 @@
 <template lang="pug">
 .albumsliderwrapper
   swiper.main( 
-    initialSlide="3"
+    :initialSlide="initialSlide"
+    class="primarySwiper"
     :modules="modules")
     swiper-slide( v-for="album in artistStore.currentArtist.albums")
       AlbumSlide( 
         :album="album"
         @changeComponent="handler" )
-  .secondarywrapper
-    nuxt-icon( name="back" @click="changeAlbum('previous')")
-    swiper.secondary(
-      :initialSlide="artistStore.currentAlbumIndex"
-      :slidesPerView="3"
-      :spaceBetween="30"
-      :centeredSlides="true"
-      :modules="modules"
-      class="mySwiper")
-      swiper-slide( v-for="album in artistStore.currentArtist.albums" )
-        AlbumSecondarySlide( :album="album")
-    nuxt-icon( name="back" @click="changeAlbum('next')")
 </template>
 
 <script>
@@ -40,22 +29,28 @@ export default {
       Swiper,
       SwiperSlide,
   },
+  props: {
+    initialSlide: {
+      type: Number
+    }
+  },
   methods: {
     handler(event) {
       this.$emit('changeComponent', event)
     },
     changeAlbum(direction) {
-      const swiper = document.querySelector('.swiper').swiper;
-      if ('back') {
-        artistStore.currentAlbumIndex =+ 1
-        // swiper.slidePrevious() 
+      const swiper = document.querySelector(".primarySwiper").swiper
+      if (direction === 'back') {
+        swiper.slidePrev()
       }
-      if ('next') {
-        const test = artistStore.currentAlbumIndex
-        artistStore.currentAlbumIndex = test + 1
-        // swiper.slideNext()
+      if (direction === 'next') {
+        swiper.slideNext()
       }
-    }
+    },
+    setAlbum( slideIndex ) {
+      const swiper = document.querySelector(".primarySwiper").swiper
+      swiper.slideTo( slideIndex )
+    },
   //   getSurroundingAlbums() {
   //     if (artistStore.currentAlbumIndex !== 0) {
   //       console.log("Previous Album: ", artistStore.currentArtist.albums[artistStore.currentAlbumIndex - 1])  

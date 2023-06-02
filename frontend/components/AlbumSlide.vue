@@ -2,13 +2,13 @@
 .slidewrapper
   .breadcrumbs 
     nuxt-icon(name="back" @click="backToTimeline") 
-    span {{ artistStore.currentArtist.name }} ● {{ album.name }}
+    span {{ artistStore.currentArtist.name }} ● 
+    span  &nbsp{{ album.name }}
   .content
     .image
-      //- img(:src="album.image.url")
+      img( v-if="album.image" :src="album.image.url")
     .description 
       span {{album.name}}
-      span {{ artistStore.currentAlbumIndex }}
     .tracks
       .header 
         span.index #
@@ -64,7 +64,7 @@ export default {
   flex-direction: column;
   color: white;
   font-size: 1rem;
-  padding: 0.75rem 2rem;
+  padding: 1.5rem 2rem;
   row-gap: 0.75rem;
   > .breadcrumbs {
     display: flex;
@@ -74,13 +74,17 @@ export default {
       width: 20px;
       cursor: pointer;
       &:hover {
-        color: #EE9B80;
+        color: grey;
       }
     }
     > span {
       font: normal 10px/10px "Lato";
       letter-spacing: 0.2rem;
       text-transform: uppercase;
+      transition: color 0.5s;
+      &:last-child {
+        color: #EE9B80;
+      }
     }
   }
   > .content {
@@ -88,15 +92,16 @@ export default {
     grid-template-columns: 260px auto 373px;
     grid-template-rows: 260px;
     column-gap: 32px;
-    margin-top: 16px;
+    margin-top: 8px;
     > .image {
       display: flex;
       column-gap: 40px;
       > img {
         width: 260px;
         height: 260px;
-        border-radius: 5px;
+        border-radius: 10px;
         overflow: hidden;
+        // filter: drop-shadow(0 0 0.25rem black);
       }
     }
     > .description {

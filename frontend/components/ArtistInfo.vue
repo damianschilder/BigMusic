@@ -40,7 +40,7 @@ export default {
   display: grid;
   grid-template-columns: 220px auto;
   column-gap: 40px;
-  margin-top: 50px;
+  margin-bottom: 24px;
   > img {
     width: 230px;
     height: 230px;
@@ -48,6 +48,7 @@ export default {
     border-radius: 10px;
   }
   > .info {
+    height: 230px;
     > .genres {
       display: flex;
       grid-area: genre;
@@ -71,6 +72,8 @@ export default {
     }
     > .name {
       display: flex;
+      height: 150px;
+      align-items: center;
       > span {
         font: 300 60px/60px "Georgia";
         color: white;
