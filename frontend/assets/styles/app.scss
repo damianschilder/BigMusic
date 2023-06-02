@@ -6,6 +6,7 @@ body {
   margin: 0; 
   background: #231A24;
   color: white;
+  font: normal 12px "Lato";
 }
 // html {
 // }
@@ -14,4 +15,26 @@ body {
 // }
 * {
   box-sizing: content-box;
+}
+
+div {
+  scrollbar-color: darkGrey rgba(0, 0, 0, 0);
+  scrollbar-width: thin;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+  cursor: pointer;
+  transform: translateX(-20px);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: purple;
+  border-radius: 5px;
+}
 }

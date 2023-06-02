@@ -1,16 +1,29 @@
 <template lang="pug">
 .slidewrapper
   .breadcrumbs 
-    nuxt-icon(name="back" @click="deleteCurrentAlbum") 
-    span {{ artistStore.currentArtist.name }} ● {{ artistStore.currentAlbum.name }}
+    nuxt-icon(name="back" @click="backToTimeline") 
+    span {{ artistStore.currentArtist.name }} ● {{ album.name }}
   .content
     .image
+      //- img(:src="album.image.url")
+    .description 
+      span {{album.name}}
+      span {{ artistStore.currentAlbumIndex }}
+    .tracks
+      .header 
+        span.index #
+        span.name Name
+        span.duration Length
+      .track( v-for="track, index in album.songs")
+        span.index {{index}} 
+        span.name {{track.name}} 
+        span.duration {{millisToMinutesAndSeconds(track.length)}} 
     
       
 </template>
 
 <script>
-import { useArtistStore } from '~~/stores/artist';
+import { useArtistStore } from '~/stores/artist';
 const artistStore = useArtistStore()
 
 export default {
@@ -23,7 +36,8 @@ export default {
     }
   },
   computed: {
-    background() {
+    currentAlbum() {
+      return artistStore.currentArtist.albums[artistStore.currentAlbumIndex]
       // if (this.album.image.url ) {
       //   return this.album.image.url
       // }
@@ -31,9 +45,15 @@ export default {
     }
   },
   methods: {
-    deleteCurrentAlbum() {
-      artistStore.currentAlbum = null
+    backToTimeline() {
+      this.$emit('changeComponent', 'timeline')
+    },
+    millisToMinutesAndSeconds(millis) {
+      var minutes = Math.floor(millis / 60000);
+      var seconds = ((millis % 60000) / 1000).toFixed(0);
+      return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
+
   }
 }
 </script>
@@ -64,14 +84,56 @@ export default {
     }
   }
   > .content {
-    > .header {
+    display: grid;
+    grid-template-columns: 260px auto 373px;
+    grid-template-rows: 260px;
+    column-gap: 32px;
+    margin-top: 16px;
+    > .image {
       display: flex;
       column-gap: 40px;
+      > img {
+        width: 260px;
+        height: 260px;
+        border-radius: 5px;
+        overflow: hidden;
+      }
     }
-  }
-  img {
-    width: 260px;
-    height: 260px;
+    > .description {
+      font: 300 60px "Lato"
+    }
+    > .tracks {
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      > .header {
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+        column-gap: 12%;
+        padding: 8px 22px;
+        background-color: #231A24;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+      > .track {
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+        column-gap: 12%;
+        padding: 8px 22px;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: font-weight 0.1s, color 0.1s;
+        &:nth-child(odd) {
+          background-color: #231A24;
+        }
+        &:hover {
+          color: #EE9B80;
+          font-weight: bold;
+        }
+      }
+    }
   }
   > .name {
     display: flex;

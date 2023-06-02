@@ -11,18 +11,11 @@ const store = useSearchStore()
 export default {
   data: () => ({
     store: store,
-    // timer: null
   }),
 
   mounted() {
     this.store.getAccessToken()
-    // this.timer = setInterval(() => {
-    //   this.store.getAccessToken()
-    // }, 3600000)
   },
-  // beforeDestroy() {
-  //   clearInterval(this.timer)
-  // }
 }
 </script>
 <style lang="scss" scoped>

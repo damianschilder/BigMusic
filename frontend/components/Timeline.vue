@@ -129,11 +129,11 @@ export default ({
       return images
     },
     dataPointSelectionHandler (event, chartContext, config) {
-      // console.log(chartContext);  
       let spotifyUri = artistStore.currentArtist.albums[config.seriesIndex].spotify_uri;
-      var result = /[^:]*$/.exec(spotifyUri)[0];
-      // console.log(result)
-      artistStore.getAlbums(spotifyUri)
+      // var result = /[^:]*$/.exec(spotifyUri)[0];
+      artistStore.getAlbums(spotifyUri, config.seriesIndex)
+      artistStore.currentAlbumIndex = config.seriesIndex
+      this.$emit('changeComponent', 'album')
     },
   },
 })

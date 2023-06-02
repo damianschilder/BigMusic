@@ -1,32 +1,25 @@
 <template lang="pug">
 .artistinfo-wrapper 
-  img( v-if="artist.imageLarge" :src="artist.imageLarge" )
+  img( v-if="artist.image" :src="artist.image.url" )
   img( v-else src="~/assets/icons/person.svg")
   .info
-    .genres-container
-      .genres
-        span( v-for="genre in artist.genres" ) {{ genre }}
-      img( src="~/assets/icons/readmore.svg")
-
-    .icons
-      .icons-pair
-        img( src="~/assets/icons/popularity.svg")
-        span {{ artist.popularity }}
+    .genres
+      span( v-for="genre in artist.genres" ) {{ genre }}
     .name
       span {{artist.name}}
-    .description 
-      span  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non elit purus. Nullam efficitur leo convallis facilisis fringilla. Aliquam mauris turpis, convallis sed elit at, fringilla consequat ipsum. Nullam ultricies ac ipsum sed iaculis. Ut laoreet nibh et suscipit varius. Vestibulum fermentum sem eu eros sagittis mattis. Integer leo dolor, blandit ac diam in, ultricies ultricies nulla.
-    
+      .icon
+        img( src="~/assets/icons/popularity.svg")
+        span {{ artist.popularity }}
 </template>
 
 <script>
 import { useArtistStore } from '@/stores/artist'
-const artist = useArtistStore()
+const artistStore = useArtistStore()
 
 
 export default {
   data: () => ({
-    artist: artist.currentArtist,
+    artist: artistStore.currentArtist,
   }),
   // computed: {
   //   genres() {
@@ -55,48 +48,36 @@ export default {
     border-radius: 10px;
   }
   > .info {
-    display: grid;
-    grid-template-areas: 
-    'genre genre'
-    'name icons'
-    'description description';
-    grid-template-rows: min-content;
-    grid-template-columns: auto 51px;
-    width: 100%;
-    > .genres-container {
+    > .genres {
       display: flex;
-      // justify-content: space-between;
       grid-area: genre;
-      // margin-bottom: 16px;
-      margin-top: 10px;
-      > .genres {
-        width: fit-content;
-        align-self: center;
-        > span {
-          font: normal 18px "Lato";
-          text-transform: uppercase;
-          color: #AEAEAE;
-          &::after {
-            content: ", ";
-          }
-          &:last-child::after {
-            content: "";
-          }
+      margin: 10px 0 16px 0;
+      > span {
+        font: normal 18px "Lato";
+        text-transform: uppercase;
+        color: #AEAEAE;
+        &::after {
+          content: ", ";
+        }
+        &:last-child::after {
+          content: "";
         }
       }
-      > img {
-        margin-left: 8px;
-        width: 30px;
-        height: 30px;
-      }
     }
-    > .icons {
+    > img {
+      margin-left: 8px;
+      width: 30px;
+      height: 30px;
+    }
+    > .name {
       display: flex;
-      grid-area: icons;
-      justify-content: flex-end;
-      width: fit-content;
-      > .icons-pair {
+      > span {
+        font: 300 60px/60px "Georgia";
+        color: white;
+      }
+      > .icon {
         display: flex;
+        margin-left: 10px;
         height: fit-content;
         > img {
           width: 30px;
@@ -107,13 +88,6 @@ export default {
           color: white;
           align-self: center;
         }
-      }
-    }
-    > .name {
-      grid-area: name;
-      > span {
-        font: 300 60px/60px "Georgia";
-        color: white;
       }
     }
     > .description {

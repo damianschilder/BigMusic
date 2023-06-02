@@ -1,24 +1,16 @@
 <template lang="pug">
-.albumsliderwrapper
-  swiper.main( 
-    initialSlide="3"
-    :modules="modules")
-    swiper-slide( v-for="album in artistStore.currentArtist.albums")
-      AlbumSlide( 
-        :album="album"
-        @changeComponent="handler" )
-  .secondarywrapper
-    nuxt-icon( name="back" @click="changeAlbum('previous')")
-    swiper.secondary(
-      :initialSlide="artistStore.currentAlbumIndex"
-      :slidesPerView="3"
-      :spaceBetween="30"
-      :centeredSlides="true"
-      :modules="modules"
-      class="mySwiper")
-      swiper-slide( v-for="album in artistStore.currentArtist.albums" )
-        AlbumSecondarySlide( :album="album")
-    nuxt-icon( name="back" @click="changeAlbum('next')")
+.secondarytimelinewrapper 
+  nuxt-icon( name="back" @click="changeAlbum('previous')")
+  swiper.secondary(
+    :initialSlide="artistStore.currentAlbumIndex"
+    :slidesPerView="3"
+    :spaceBetween="30"
+    :centeredSlides="true"
+    :modules="modules"
+    class="mySwiper")
+    swiper-slide( v-for="album in artistStore.currentArtist.albums" )
+      AlbumSecondarySlide( :album="album")
+  nuxt-icon( name="back" @click="changeAlbum('next')")
 </template>
 
 <script>
@@ -30,6 +22,7 @@ import 'swiper/css';
 import { EffectCards } from 'swiper';
 import { useArtistStore } from '@/stores/artist'
 const artistStore = useArtistStore()
+const swiper = document.querySelector('.swiper').swiper;
 
 export default {
   data: () => ({
@@ -45,7 +38,6 @@ export default {
       this.$emit('changeComponent', event)
     },
     changeAlbum(direction) {
-      const swiper = document.querySelector('.swiper').swiper;
       if ('back') {
         artistStore.currentAlbumIndex =+ 1
         // swiper.slidePrevious() 
@@ -85,31 +77,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.main {
-  /* height: 600px; */
-  background: rgba(217, 217, 217, 0.05);
-  border-radius: 20px;
-  padding-bottom: 32px;
-}
-
-.secondarywrapper {
-  display: flex;
-  align-items: center;
-  background: rgba(217, 217, 217, 0.05);
-  border-radius: 20px;
-  margin-top: 32px;
-  border-radius: 20px;
-  padding: 12px 32px;
-  & .swiper-slide {
-    display: flex;
-    justify-content: center;
-    width: 140px;
-  }
-  & .nuxt-icon svg {
-    width: 50px;
-    height: 50px;
-  }
-}
-</style>

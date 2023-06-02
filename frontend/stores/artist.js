@@ -6,7 +6,8 @@ export const useArtistStore = defineStore('artist', {
     loading: false,
     currentArtist: {},
     currentAlbum: null,
-    backupAlbum: null
+    backupAlbum: null,
+    currentAlbumIndex: 0
   }),
   
   actions: {
@@ -19,24 +20,22 @@ export const useArtistStore = defineStore('artist', {
         let response = data
         this.setCurrentArtist(response['_rawValue'])
         this.loading = false
-        // console.log(response['_rawValue'])
     },
-    async getAlbums( album ) {
+    async getAlbums( album, index ) {
       this.loading = true
       const { data } = await useFetch(
         `http://127.0.0.1:5000/album/${ album }`, { 
           method: 'GET',       
         })
         let response = data
-        this.setCurrentalbum(response['_rawValue'])
+        this.setCurrentAlbum(response['_rawValue'].songs, index)
         this.loading = false
-        console.log(response['_rawValue'])
     },
     setCurrentArtist( artist ) {
       this.currentArtist = artist
     },
-    setCurrentalbum( album ) {
-      this.currentAlbum = album
+    setCurrentAlbum( songs, index ) {
+      this.currentArtist.albums[index].songs = songs
     }
   },
 })
