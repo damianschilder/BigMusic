@@ -6,7 +6,7 @@ from spotify2mb import get_artist_mbid
 # creates artist dictionary from Musicbrainz
 
 def musicbrainz_api(spotify_artist_id):
-    
+    # convert Spotify artist URI to Musicbrainz artist Identifier
     artist_id = get_artist_mbid(spotify_artist_id)
 
     album_search_raw = requests.get(f'https://musicbrainz.org/ws/2/artist/{artist_id}?inc=release-groups&fmt=json')
