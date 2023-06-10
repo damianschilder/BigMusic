@@ -65,7 +65,6 @@ def get_artist_results(spotify_artist_id):
     spotify_albums_list = spotify_artist_dict["albums"]
 
     musicbrainz_albums_list = musicbrainz_api(spotify_artist_id)
-    #print(spotify_albums_list)
 
     # deduplicate spotify results
     # spotify_album_list_noduplicates uses same format as spotify_albums_list
@@ -75,7 +74,7 @@ def get_artist_results(spotify_artist_id):
         album_identifiers = (item["name"],item["release_date"][:4])
         if album_identifiers not in seen:
             seen.add(album_identifiers)
-        spotify_album_list_noduplicates.append(item)
+            spotify_album_list_noduplicates.append(item)
 
     # create identifier list with for each value dictionary with values name and year
     spotify_albums_identifier_list = []

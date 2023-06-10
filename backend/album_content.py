@@ -7,7 +7,7 @@ from spotify_auth import get_spotify_credentials
 
 def get_album_content(id):
 
-
+    # checks if id is MBID
     musicbrainz_regex_pattern = r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
     if re.match(musicbrainz_regex_pattern, id):
 
@@ -18,15 +18,13 @@ def get_album_content(id):
         release_content_raw = requests.get(f'https://musicbrainz.org/ws/2/release/{release_id}?inc=recordings&fmt=json')
         release_content_json = json.loads(release_content_raw.text)
 
-
-
+        # create dictionary for album content retrieved from Musicbrainz API
         release_dict = {}
         release_dict.update({"name":release_content_json["title"]})
         release_dict.update({"release_date":release_content_json["date"][0:4]})
 
-
+        # add songs data
         songs_list = []
-        songs_dict = {}
         for item in release_content_json['media'][0]['tracks']:
             temp_dict = {}
             temp_dict.update({"position":item["position"]})
@@ -36,7 +34,6 @@ def get_album_content(id):
             songs_list.append(temp_dict)
 
         release_dict.update({"songs":songs_list})
-        print(release_dict)
 
 
     elif 'spotify:album' in id:
@@ -48,18 +45,15 @@ def get_album_content(id):
         album_content = requests.get(f"https://api.spotify.com/v1/albums/{album_id}", headers=headers).json()
 
 
-
+        # create dictionary for album content retrieved from Musicbrainz API
         release_dict = {}
         release_dict.update({"name":album_content['name']})
         release_dict.update({"release_date":album_content['release_date'][0:4]})
         release_dict.update({"image":album_content["images"][0]})
 
-
+        # add songs data
         songs_list = []
-
-
         for item in album_content['tracks']['items']:
-            print()
 
             temp_dict = {}
             temp_dict.update({"position":item["track_number"]})
