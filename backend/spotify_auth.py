@@ -3,8 +3,8 @@ import requests
 
 # authorises in order to do Spotify API calls
 def get_spotify_credentials():
-    CLIENT_ID = '7d9d65e360c9416ab3a37681a5d7ed8e'
-    CLIENT_SECRET = '53e9e6ce5431435c8519bb8af86bc137'
+    CLIENT_ID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    CLIENT_SECRET = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     AUTH_URL = 'https://accounts.spotify.com/api/token'
     # POST
     auth_response = requests.post(AUTH_URL, {
