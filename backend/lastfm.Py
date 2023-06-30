@@ -1,6 +1,6 @@
 import requests
 def lastfm_api(musicbrainz_album_id):
-    LF_API_KEY = "b8479fa415d359aaf7e74143adfff0e7"
+    LF_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
     LFlanguage = "en"
     #musicbrainz_album_id = "a885cfae-1025-344c-8326-dea2094b2683"
