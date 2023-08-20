@@ -40,26 +40,13 @@ sorted_albums = sorted(duplicates_removed, key=lambda x: x['Year'])
 spotify_results["artist"]["albums"] = sorted_albums
 #print(spotify_results)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ##################################
 # check for unique values
 spotify_list = []
 for item in spotify_albums:
     spotify_list.append(str(item))
 
-print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
 print(spotify_list)
 
 musicbrainz_list = []
