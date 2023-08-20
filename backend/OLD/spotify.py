@@ -6,8 +6,8 @@ def spotify_caller(query):
     album_limit = 3
 
 
-    CLIENT_ID = '7d9d65e360c9416ab3a37681a5d7ed8e'
-    CLIENT_SECRET = '53e9e6ce5431435c8519bb8af86bc137'
+    CLIENT_ID = ''
+    CLIENT_SECRET = ''
 
     AUTH_URL = 'https://accounts.spotify.com/api/token'
 
